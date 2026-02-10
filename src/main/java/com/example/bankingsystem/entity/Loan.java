@@ -1,6 +1,12 @@
 package com.example.bankingsystem.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "loans")
@@ -12,6 +18,8 @@ public class Loan {
 
     private double amount;
     private int durationMonths;
+    private String status;
+    private String type;
 
     @ManyToOne
     @JoinColumn(name = "user_id") // foreign key
@@ -20,9 +28,11 @@ public class Loan {
     // Constructors
     public Loan() {}
 
-    public Loan(double amount, int durationMonths, User user) {
+    public Loan(double amount, int durationMonths, String type, String status, User user) {
         this.amount = amount;
         this.durationMonths = durationMonths;
+        this.type = type;
+        this.status = status;
         this.user = user;
     }
 
@@ -59,13 +69,20 @@ public class Loan {
         this.user = user;
     }
 
-    public void setType(String type) {
-      
-        throw new UnsupportedOperationException("Unimplemented method 'setType'");
+    public String getStatus() {
+        return status;
     }
 
-    public void setStatus(String string) {
-      
-        throw new UnsupportedOperationException("Unimplemented method 'setStatus'");
+    public void setStatus(String status) {
+        this.status = status;
     }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
 }

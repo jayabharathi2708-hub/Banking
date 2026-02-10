@@ -3,6 +3,7 @@ package com.example.bankingsystem.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,12 +11,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.bankingsystem.entity.User;
+import com.example.bankingsystem.service.AccountService.AuthService;
+
 @Controller
 @RequestMapping("/mybank")   // ✅ very important
 public class WebController {
 
     private Map<String, String> users = new HashMap<>();
     private Map<String, Double> accounts = new HashMap<>();
+
+    @Autowired
+    AuthService authService;
 
     @GetMapping("")
     public String home() {
@@ -32,7 +39,7 @@ public class WebController {
                               @RequestParam String password,
                               Model model) {
 
-        if (users.containsKey(username) && users.get(username).equals(password)) {
+        if (authService.login(username, password) != null) {
             accounts.putIfAbsent(username, 1000.0);
             model.addAttribute("username", username);
             model.addAttribute("balance", accounts.get(username));
@@ -53,12 +60,19 @@ public class WebController {
                                  @RequestParam String password,
                                  Model model) {
 
-        if (users.containsKey(username)) {
+
+       
+
+        if (authService.findByUsername(username)) {
             model.addAttribute("error", "Username already exists!");
             return "register";
         }
-
-        users.put(username, password);
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(password);
+        authService.register(user);
+        
+        // users.put(username, password);
         model.addAttribute("success", "Registration successful! Please login.");
         return "login";
     }

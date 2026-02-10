@@ -22,22 +22,22 @@ public class Account {
 
     public double getBalance() {
        
-        throw new UnsupportedOperationException("Unimplemented method 'getBalance'");
+        return balance;
     }
 
     public void setBalance(double d) {
       
-        throw new UnsupportedOperationException("Unimplemented method 'setBalance'");
+        this.balance = d;
     }
 
-    public void setType(String string) {
+    public void setType(String type) {
        
-        throw new UnsupportedOperationException("Unimplemented method 'setType'");
+        this.type = type;
     }
 
-    public void setUser(User savedUser) {
+    public void setUser(User user) {
       
-        throw new UnsupportedOperationException("Unimplemented method 'setUser'");
+        this.user = user;
     }
 
     // getters and setters

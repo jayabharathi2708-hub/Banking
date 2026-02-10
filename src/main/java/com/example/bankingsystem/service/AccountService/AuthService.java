@@ -1,13 +1,14 @@
 package com.example.bankingsystem.service.AccountService;
 
+import java.util.Random;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.example.bankingsystem.entity.Account;
 import com.example.bankingsystem.entity.User;
 import com.example.bankingsystem.repository.AccountRepository;
 import com.example.bankingsystem.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.Random;
 
 @Service
 public class AuthService {
@@ -44,5 +45,9 @@ public class AuthService {
         }
 
         return user;
+    }
+
+    public boolean findByUsername(String username) {
+        return userRepo.findByUsername(username).isPresent();
     }
 }
