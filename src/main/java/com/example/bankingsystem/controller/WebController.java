@@ -22,7 +22,7 @@ public class WebController {
         return "index";
     }
 
-    @GetMapping("/login-page")
+    @GetMapping("/login")
     public String loginPage() {
         return "login";
     }
