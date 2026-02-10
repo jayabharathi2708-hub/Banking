@@ -1,0 +1,16 @@
+<div class="form-container">
+    <h2>Deposit / Withdraw</h2>
+    <form th:action="@{/transaction}" method="post">
+        <input type="hidden" name="username" th:value="${username}">
+        <input type="number" step="0.01" name="amount" placeholder="Amount" required><br>
+        <select name="type">
+            <option value="deposit">Deposit</option>
+            <option value="withdraw">Withdraw</option>
+        </select><br>
+        <button type="submit">Submit</button>
+    </form>
+    <p th:text="${success}" style="color:green"></p>
+    <p th:text="${error}" style="color:red"></p>
+    <p th:text="'Current Balance: $' + ${balance}"></p>
+    <a th:href="@{/accounts}">Back to Accounts</a>
+</div>
