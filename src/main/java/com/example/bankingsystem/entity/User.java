@@ -26,23 +26,45 @@ public class User {
     private int cibilScore;
     private double totalSpend;
 
+
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Account> accounts = new ArrayList<>();
 
-    public void setCibilScore(int id) {
+    public void setCibilScore(int cibilScore) {
+        this.cibilScore = cibilScore;
         
-        throw new UnsupportedOperationException("Unimplemented method 'setCibilScore'");
     }
 
-    public void setTotalSpend(int id) {
-        
-        throw new UnsupportedOperationException("Unimplemented method 'setTotalSpend'");
+    public void setTotalSpend(double totalSpend) {
+        this.totalSpend = totalSpend;
     }
 
-    public Object getPassword() {
-        
-        throw new UnsupportedOperationException("Unimplemented method 'getPassword'");
+    public double getTotalSpend() {
+        return totalSpend;
+    }
+
+    public int getCibilScore() {
+        return cibilScore;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     // getters and setters
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+
 }
