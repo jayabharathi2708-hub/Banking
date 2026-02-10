@@ -2,8 +2,8 @@
     <h2 th:text="'Welcome, ' + ${username} + '!'"></h2>
     <p th:text="'Your balance: $' + ${balance}"></p>
     <nav>
-        <a th:href="@{/transaction}">Deposit/Withdraw</a> |
-        <a th:href="@{/loans}">Loans</a> |
+        <a th:href="@{/mybank/transaction}">Deposit/Withdraw</a> |
+        <a th:href="@{/mybank/loans}">Loans</a> |
         <a th:href="@{/mybank}">Home</a>
     </nav>
 </div>

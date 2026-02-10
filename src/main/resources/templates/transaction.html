@@ -12,5 +12,5 @@
     <p th:text="${success}" style="color:green"></p>
     <p th:text="${error}" style="color:red"></p>
     <p th:text="'Current Balance: $' + ${balance}"></p>
-    <a th:href="@{/accounts}">Back to Accounts</a>
+    <a th:href="@{/mybank/accounts(username=${username})}">Back to Accounts</a>
 </div>
