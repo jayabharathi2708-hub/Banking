@@ -1,9 +1,105 @@
-<div class="container">
-    <h2 th:text="'Welcome, ' + ${username} + '!'"></h2>
-    <p th:text="'Your balance: $' + ${balance}"></p>
-    <nav>
-        <a th:href="@{/mybank/transaction}">Deposit/Withdraw</a> |
-        <a th:href="@{/mybank/loans}">Loans</a> |
-        <a th:href="@{/mybank}">Home</a>
-    </nav>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>MyBank | Account Dashboard</title>
+
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Segoe UI", sans-serif;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .dashboard {
+            background: #ffffff;
+            width: 420px;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+            text-align: center;
+        }
+
+        .dashboard h2 {
+            color: #203a43;
+            margin-bottom: 10px;
+        }
+
+        .balance {
+            font-size: 26px;
+            font-weight: bold;
+            color: #2c5364;
+            margin: 20px 0;
+        }
+
+        .balance span {
+            font-size: 14px;
+            color: #777;
+            display: block;
+        }
+
+        .actions {
+            margin-top: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .actions a {
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 500;
+            color: white;
+            background: #2c5364;
+            transition: background 0.3s;
+        }
+
+        .actions a:hover {
+            background: #203a43;
+        }
+
+        .home-link {
+            margin-top: 18px;
+            font-size: 14px;
+        }
+
+        .home-link a {
+            color: #2c5364;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .home-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="dashboard">
+    <h2 th:text="'Welcome, ' + ${username} + ' 👋'"></h2>
+
+    <div class="balance">
+        ₹ <span th:text="${balance}"></span>
+        <span>Available Balance</span>
+    </div>
+
+    <div class="actions">
+        <a th:href="@{/mybank/transaction}">Deposit / Withdraw</a>
+        <a th:href="@{/mybank/loans}">Loans</a>
+    </div>
+
+    <div class="home-link">
+        <a th:href="@{/mybank}">← Back to Home</a>
+    </div>
 </div>
+
+</body>
+</html>
