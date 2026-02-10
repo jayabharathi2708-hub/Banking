@@ -1,10 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>MyBank | Login</title>
+
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            font-family: "Segoe UI", sans-serif;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .form-container {
+            background: #ffffff;
+            width: 360px;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.25);
+            text-align: center;
+        }
+
+        .form-container h2 {
+            color: #203a43;
+            margin-bottom: 20px;
+        }
+
+        .form-container input {
+            width: 100%;
+            padding: 11px;
+            margin-bottom: 14px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        .form-container input:focus {
+            outline: none;
+            border-color: #2c5364;
+        }
+
+        .form-container button {
+            width: 100%;
+            padding: 11px;
+            background: #2c5364;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .form-container button:hover {
+            background: #203a43;
+        }
+
+        .error {
+            margin-top: 10px;
+            font-size: 13px;
+            color: #c0392b;
+            background: #ffe6e6;
+            padding: 8px;
+            border-radius: 4px;
+        }
+
+        .form-container a {
+            display: block;
+            margin-top: 14px;
+            font-size: 14px;
+            color: #2c5364;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .form-container a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
 <div class="form-container">
-    <h2>Login</h2>
+    <h2>Login to MyBank</h2>
+
     <form th:action="@{/mybank/login}" method="post">
-        <input type="text" name="username" placeholder="Username" required><br>
-        <input type="password" name="password" placeholder="Password" required><br>
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="password" name="password" placeholder="Password" required>
         <button type="submit">Login</button>
     </form>
-    <p th:text="${error}" style="color:red"></p>
-    <p><a th:href="@{/mybank/register}">Don't have an account? Register</a></p>
+
+    <div class="error" th:if="${error}" th:text="${error}"></div>
+
+    <a th:href="@{/mybank/register}">
+        Don’t have an account? Register
+    </a>
 </div>
+
+</body>
+</html>

@@ -1,5 +1,130 @@
-<form th:action="@{/mybank/login}" method="post">
-    Username: <input type="text" name="username"><br>
-    Password: <input type="password" name="password"><br>
-    <button type="submit">Login</button>
-</form>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>MyBank | Login</title>
+
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            font-family: "Segoe UI", sans-serif;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-card {
+            background: #ffffff;
+            width: 360px;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+        }
+
+        .login-card h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #203a43;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-size: 14px;
+            color: #555;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #2c5364;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 11px;
+            background: #2c5364;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 15px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background: #203a43;
+        }
+
+        .links {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .links a {
+            color: #2c5364;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .links a:hover {
+            text-decoration: underline;
+        }
+
+        .error {
+            background: #ffe6e6;
+            color: #c0392b;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 13px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="login-card">
+    <h2>MyBank Login</h2>
+
+    <!-- Error message -->
+    <div class="error" th:if="${error}" th:text="${error}"></div>
+
+    <form th:action="@{/mybank/login}" method="post">
+
+        <div class="form-group">
+            <label>Username</label>
+            <input type="text" name="username" placeholder="Enter username" required>
+        </div>
+
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" name="password" placeholder="Enter password" required>
+        </div>
+
+        <button class="btn" type="submit">Login</button>
+    </form>
+
+    <div class="links">
+        New user?
+        <a th:href="@{/mybank/register}">Create account</a>
+    </div>
+</div>
+
+</body>
+</html>
