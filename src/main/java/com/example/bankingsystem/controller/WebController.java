@@ -1,8 +1,5 @@
 package com.example.bankingsystem.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,18 +8,21 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.bankingsystem.entity.Account;
 import com.example.bankingsystem.entity.User;
+import com.example.bankingsystem.service.AccountService.AccountService;
 import com.example.bankingsystem.service.AccountService.AuthService;
 
 @Controller
 @RequestMapping("/mybank")   // ✅ very important
 public class WebController {
 
-    private Map<String, String> users = new HashMap<>();
-    private Map<String, Double> accounts = new HashMap<>();
 
     @Autowired
     AuthService authService;
+
+    @Autowired
+    AccountService accountService;
 
     @GetMapping("")
     public String home() {
@@ -40,9 +40,8 @@ public class WebController {
                               Model model) {
 
         if (authService.login(username, password) != null) {
-            accounts.putIfAbsent(username, 1000.0);
             model.addAttribute("username", username);
-            model.addAttribute("balance", accounts.get(username));
+            model.addAttribute("balance", accountService.getBalance(authService.getUserByUsername(username).getId()));
             return "accounts";
         } else {
             model.addAttribute("error", "Invalid credentials!");
@@ -59,9 +58,6 @@ public class WebController {
     public String registerSubmit(@RequestParam String username,
                                  @RequestParam String password,
                                  Model model) {
-
-
-       
 
         if (authService.findByUsername(username)) {
             model.addAttribute("error", "Username already exists!");
@@ -80,12 +76,13 @@ public class WebController {
     @GetMapping("/accounts")
     public String accountsPage(@RequestParam String username, Model model) {
         model.addAttribute("username", username);
-        model.addAttribute("balance", accounts.get(username));
+        model.addAttribute("balance", accountService.getBalance(authService.getUserByUsername(username).getId()));
         return "accounts";
     }
 
     @GetMapping("/transaction")
-    public String transactionPage() {
+    public String transactionPage(@RequestParam String username, Model model) {
+        model.addAttribute("username", username);
         return "transaction";
     }
 
@@ -95,7 +92,9 @@ public class WebController {
                                     @RequestParam String type,
                                     Model model) {
 
-        double balance = accounts.getOrDefault(username, 0.0);
+        Account account = accountService.getAccountByUserId(authService.getUserByUsername(username).getId()).orElse(null);
+
+        double balance = account.getBalance();
 
         if ("deposit".equals(type)) {
             balance += amount;
@@ -109,7 +108,7 @@ public class WebController {
             balance -= amount;
         }
 
-        accounts.put(username, balance);
+        accountService.deposit(authService.getUserByUsername(username).getId(), amount);
         model.addAttribute("success", "Transaction successful!");
         model.addAttribute("balance", balance);
         model.addAttribute("username", username);
@@ -117,7 +116,8 @@ public class WebController {
     }
 
     @GetMapping("/loans")
-    public String loansPage() {
+    public String loansPage(@RequestParam String username, Model model) {
+        model.addAttribute("username", username);
         return "loans";
     }
 

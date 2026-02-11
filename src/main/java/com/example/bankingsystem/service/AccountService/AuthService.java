@@ -50,4 +50,9 @@ public class AuthService {
     public boolean findByUsername(String username) {
         return userRepo.findByUsername(username).isPresent();
     }
+
+    public User getUserByUsername(String username) {
+        return userRepo.findByUsername(username)
+                .orElse(null);
+    }
 }
