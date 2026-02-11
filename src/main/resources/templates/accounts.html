@@ -92,8 +92,8 @@
     </div>
 
     <div class="actions">
-        <a th:href="@{/mybank/transaction}">Deposit / Withdraw</a>
-        <a th:href="@{/mybank/loans}">Loans</a>
+        <a th:href="@{/mybank/transaction(username=${username})}">Deposit / Withdraw</a>
+        <a th:href="@{/mybank/loans(username=${username})}">Loans</a>
     </div>
 
     <div class="home-link">

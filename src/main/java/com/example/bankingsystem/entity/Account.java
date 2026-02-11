@@ -39,6 +39,4 @@ public class Account {
       
         this.user = user;
     }
-
-    // getters and setters
 }

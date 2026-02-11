@@ -3,7 +3,6 @@ package com.example.bankingsystem.service.AccountService;
 
 import java.util.Optional;
 
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,9 +24,12 @@ public class AccountService {
         return accountRepository.findById(userId); // Make sure this method exists in AccountRepository
     }
 
-    public Account deposit(Long accountId, double amount) {
-        Account account = accountRepository.findById(accountId)
-                .orElseThrow(() -> new RuntimeException("Account not found"));
+    public Optional<Account> getAccountByUserId(Long userId) {
+        return Optional.ofNullable(accountRepository.findByUserId(userId));
+    }
+
+    public Account deposit(long accountId, double amount) {
+        Account account = accountRepository.findByUserId(accountId);
         account.setBalance(account.getBalance() + amount);
         return accountRepository.save(account);
     }
@@ -42,13 +44,12 @@ public class AccountService {
         return accountRepository.save(account);
     }
 
-    public User register(User user) {
-       
-        throw new UnsupportedOperationException("Unimplemented method 'register'");
-    }
-
-    public User login(String username, String password) {
-        
-        throw new UnsupportedOperationException("Unimplemented method 'login'");
+    public Object getBalance(Long userId) {
+        System.out.println("Fetching balance for user ID: " + userId);
+        Account account = accountRepository.findByUserId(userId);
+        if (account == null) {
+            throw new RuntimeException("Account not found for user ID: " + userId);
+        }
+        return account.getBalance();
     }
 }
