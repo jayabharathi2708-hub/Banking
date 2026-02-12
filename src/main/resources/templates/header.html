@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>MyBank | Online Banking</title>
+
+    <style>
+        /* ===== RESET ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", sans-serif;
+        }
+
+        body {
+            background: #f4f6f9;
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            background: linear-gradient(90deg, #0f2027, #203a43, #2c5364);
+            color: #fff;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            margin-left: 18px;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+
+    </style>
+</head>
+
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<header class="navbar">
+    <div class="logo">MyBank</div>
+
+    <nav class="nav-links">
+        <a th:if="${username == null}" th:href="@{/mybank/login}">Login</a>
+        <a th:if="${username == null}" th:href="@{/mybank/register}">Register</a>
+        <a th:href="@{/mybank/accounts(username=${username})}">Accounts</a>
+        <a th:href="@{/mybank/transaction(username=${username})}">Deposit / Withdraw</a>
+        <a th:href="@{/mybank/loans(username=${username})}">Loans</a>
+        <a th:href="@{/mybank/login}">Logout</a>
+    </nav>
+</header>
+
+</body>
+</html>

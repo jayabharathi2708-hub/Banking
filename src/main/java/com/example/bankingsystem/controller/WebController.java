@@ -1,5 +1,6 @@
 package com.example.bankingsystem.controller;
 
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -7,11 +8,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.example.bankingsystem.entity.Account;
 import com.example.bankingsystem.entity.User;
 import com.example.bankingsystem.service.AccountService.AccountService;
 import com.example.bankingsystem.service.AccountService.AuthService;
+import com.example.bankingsystem.service.AccountService.LoanService;
 
 @Controller
 @RequestMapping("/mybank")   // ✅ very important
@@ -23,6 +26,9 @@ public class WebController {
 
     @Autowired
     AccountService accountService;
+
+    @Autowired
+    LoanService loanService;
 
     @GetMapping("")
     public String home() {
@@ -108,7 +114,7 @@ public class WebController {
             balance -= amount;
         }
 
-        accountService.deposit(authService.getUserByUsername(username).getId(), amount);
+        accountService.deposit(authService.getUserByUsername(username).getId(), balance);
         model.addAttribute("success", "Transaction successful!");
         model.addAttribute("balance", balance);
         model.addAttribute("username", username);
@@ -122,11 +128,42 @@ public class WebController {
     }
 
     @PostMapping("/loans")
-    public String loanSubmit(@RequestParam String username,
-                             @RequestParam double amount,
+    public String loanSubmit(@RequestBody Map<String, Object> loanRequest,
                              Model model) {
+        String username = (String) loanRequest.get("username");
+        String loanType = (String) loanRequest.get("loanType");
+        String fullName = (String) loanRequest.get("fullName");
+        String email = (String) loanRequest.get("email");
+        String phone = (String) loanRequest.get("phone");
+        String dob = (String) loanRequest.get("dob");
+        String address = (String) loanRequest.get("address");
+        double loanAmount = ((Number) loanRequest.get("loanAmount")).doubleValue();
+        int tenure = ((Number) loanRequest.get("tenure")).intValue();
+        double income = ((Number) loanRequest.get("income")).doubleValue();
+        int cibilScore = ((Number) loanRequest.get("cibilScore")).intValue();
 
-        model.addAttribute("success", "Loan of ₹" + amount + " approved for " + username);
+        User user = authService.getUserByUsername(username);
+        if (user == null) {
+            model.addAttribute("error", "User not found!");
+            return "loans";
+        }
+
+        // Validate loan eligibility
+        if (cibilScore < 650) {
+            model.addAttribute("error", "CIBIL score must be at least 650!");
+            return "loans";
+        }
+
+        if (income * 0.5 < (loanAmount / (tenure * 12))) {
+            model.addAttribute("error", "Loan amount exceeds your repayment capacity!");
+            return "loans";
+        }
+
+        // Process loan application
+        loanService.applyLoan(user.getId(), loanType, loanAmount);
+
+        model.addAttribute("success", "Loan of ₹" + loanAmount + " approved for " + fullName);
+        model.addAttribute("username", username);
         return "loans";
     }
 }

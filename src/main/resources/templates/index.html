@@ -17,35 +17,6 @@
             background: #f4f6f9;
         }
 
-        /* ===== NAVBAR ===== */
-        .navbar {
-            background: linear-gradient(90deg, #0f2027, #203a43, #2c5364);
-            color: #fff;
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 22px;
-            font-weight: bold;
-            letter-spacing: 1px;
-        }
-
-        .nav-links a {
-            color: #fff;
-            text-decoration: none;
-            margin-left: 18px;
-            padding: 6px 12px;
-            border-radius: 4px;
-            font-size: 14px;
-            transition: background 0.3s;
-        }
-
-        .nav-links a:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
 
         /* ===== SLIDER ===== */
         .slider {
@@ -94,19 +65,8 @@
 </head>
 
 <body>
+ <div th:insert="header.html"></div>
 
-<!-- ===== NAVBAR ===== -->
-<header class="navbar">
-    <div class="logo">MyBank</div>
-
-    <nav class="nav-links">
-        <a th:href="@{/mybank/login}">Login</a>
-        <a th:href="@{/mybank/register}">Register</a>
-        <a th:href="@{/mybank/accounts(username=${username})}">Accounts</a>
-        <a th:href="@{/mybank/transaction}">Deposit / Withdraw</a>
-        <a th:href="@{/mybank/loans}">Loans</a>
-    </nav>
-</header>
 
 <!-- ===== IMAGE SLIDER ===== -->
 <div class="slider">
