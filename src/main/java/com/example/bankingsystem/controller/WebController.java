@@ -1,6 +1,7 @@
 package com.example.bankingsystem.controller;
 
 import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,13 +9,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import com.example.bankingsystem.entity.Account;
 import com.example.bankingsystem.entity.User;
+import com.example.bankingsystem.entity.Transaction;
 import com.example.bankingsystem.service.AccountService.AccountService;
 import com.example.bankingsystem.service.AccountService.AuthService;
 import com.example.bankingsystem.service.AccountService.LoanService;
+import com.example.bankingsystem.service.AccountService.TransactionService;
 
 @Controller
 @RequestMapping("/mybank")   // ✅ very important
@@ -29,6 +31,9 @@ public class WebController {
 
     @Autowired
     LoanService loanService;
+
+    @Autowired
+    TransactionService transactionService;
 
     @GetMapping("")
     public String home() {
@@ -118,6 +123,13 @@ public class WebController {
         model.addAttribute("success", "Transaction successful!");
         model.addAttribute("balance", balance);
         model.addAttribute("username", username);
+
+        Transaction transaction = new Transaction();
+        transaction.setAccount(account);
+        transaction.setAmount(amount);
+        transaction.setType(type);
+
+        transactionService.saveTransaction(transaction);
         return "transaction";
     }
 
@@ -128,7 +140,7 @@ public class WebController {
     }
 
     @PostMapping("/loans")
-    public String loanSubmit(@RequestBody Map<String, Object> loanRequest,
+    public String loanSubmit(@RequestParam Map<String, String> loanRequest,
                              Model model) {
         String username = (String) loanRequest.get("username");
         String loanType = (String) loanRequest.get("loanType");
@@ -137,10 +149,10 @@ public class WebController {
         String phone = (String) loanRequest.get("phone");
         String dob = (String) loanRequest.get("dob");
         String address = (String) loanRequest.get("address");
-        double loanAmount = ((Number) loanRequest.get("loanAmount")).doubleValue();
-        int tenure = ((Number) loanRequest.get("tenure")).intValue();
-        double income = ((Number) loanRequest.get("income")).doubleValue();
-        int cibilScore = ((Number) loanRequest.get("cibilScore")).intValue();
+        double loanAmount = Double.parseDouble(loanRequest.get("loanAmount"));
+        int tenure = Integer.parseInt(loanRequest.get("tenure"));
+        double income = Double.parseDouble(loanRequest.get("income"));
+        int cibilScore = Integer.parseInt(loanRequest.get("cibilScore"));
 
         User user = authService.getUserByUsername(username);
         if (user == null) {

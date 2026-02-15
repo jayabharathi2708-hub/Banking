@@ -30,7 +30,7 @@ public class AccountService {
 
     public Account deposit(long accountId, double amount) {
         Account account = accountRepository.findByUserId(accountId);
-        account.setBalance(account.getBalance() + amount);
+        account.setBalance(amount);
         return accountRepository.save(account);
     }
 
