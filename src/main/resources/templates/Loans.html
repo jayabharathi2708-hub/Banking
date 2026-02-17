@@ -6,68 +6,6 @@
     <meta name="_csrf" th:if="${_csrf}" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:if="${_csrf}" th:content="${_csrf.headerName}"/>
     <title>Loan Application - Banking System</title>
-<!-- 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Display server-side messages
-            const urlParams = new URLSearchParams(window.location.search);
-            const errorMsg = urlParams.get('error');
-            const successMsg = urlParams.get('success');
-            
-            if (errorMsg) {
-                if (typeof showError === 'function') showError(decodeURIComponent(errorMsg));
-            }
-            if (successMsg) {
-                if (typeof showSuccess === 'function') showSuccess(decodeURIComponent(successMsg));
-            }
-
-            const form = document.getElementById('loanForm');
-            form.addEventListener('submit', function (e) {
-                e.preventDefault();
-
-                const fd = new FormData(form);
-                const payload = {};
-                for (const [k, v] of fd.entries()) {
-                    if (k === 'documents') {
-                        payload.documents = payload.documents || [];
-                        payload.documents.push(v);
-                    } else {
-                        payload[k] = v;
-                    }
-                }
-
-                ['loanAmount', 'tenure', 'income', 'cibilScore'].forEach(n => {
-                    if (payload[n] !== undefined && payload[n] !== '') payload[n] = Number(payload[n]);
-                });
-
-                payload.username = document.querySelector('input[name="username"]').value;
-
-                const tokenMeta = document.querySelector('meta[name="_csrf"]');
-                const headerMeta = document.querySelector('meta[name="_csrf_header"]');
-                const headers = { 'Content-Type': 'application/json' };
-                if (tokenMeta && headerMeta) {
-                    headers[headerMeta.getAttribute('content')] = tokenMeta.getAttribute('content');
-                }
-
-                fetch('/mybank/mybank/loans', {
-                    method: 'POST',
-                    headers,
-                    body: JSON.stringify(payload)
-                })
-                .then(res => {
-                    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-                    return res.json();
-                })
-                .then(data => {
-                    if (typeof showSuccess === 'function') showSuccess(data.success || 'Loan application submitted for approval');
-                    form.reset();
-                })
-                .catch(err => {
-                    if (typeof showError === 'function') showError(err.message || 'Failed to submit loan application');
-                });
-            }, true);
-        });
-    </script> -->
 
     <style>
         * {
@@ -272,12 +210,12 @@
         </div>
         
         <div class="content">
-            <div id="success" class="success-msg" th:if="${success}" th:text="${success}"></div>
-           <div class="error" th:if="${error}" th:text="${error}"></div>
             <form id="loanForm" method="post" th:action="@{/mybank/loans}">
                 <input type="hidden" name="username" th:value="${username}" />
                 <!-- Loan Type Selection -->
                 <div class="section">
+                    <div id="success" class="success-msg" th:if="${success}" th:text="${success}"></div>
+                   <div class="error" th:if="${error}" th:text="${error}"></div>
                     <h2>Select Loan Type</h2>
                     <div class="loan-types">
                         <div class="loan-card">
@@ -400,53 +338,21 @@
 
                 <div class="button-group">
                     <button type="submit" class="btn-submit">Submit Application</button>
-                    <button type="reset" class="btn-reset">Clear Form</button>
+                    <button type="button" class="btn-reset" onclick="confirmClear()">Clear Form</button>
+
                 </div>
             </form>
         </div>
     </div>
+<script>
+    function confirmClear() {
+        const confirmation = confirm("Data will be cleared after 24 hours.\nClick OK to continue.");
 
-    <!-- <script>
-        document.getElementById('loanForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const loanType = document.querySelector('input[name="loanType"]:checked');
-            const fullName = document.getElementById('fullName').value;
-            const email = document.getElementById('email').value;
-            const phone = document.getElementById('phone').value;
-            const loanAmount = document.getElementById('loanAmount').value;
-
-            if (!loanType || !fullName || !email || !phone || !loanAmount) {
-                showError('Please fill all required fields');
-                return;
-            }
-
-            const phoneRegex = /^\d{10}$/;
-            if (!phoneRegex.test(phone.replace(/[-\s]/g, ''))) {
-                showError('Phone number must be 10 digits');
-                return;
-            }
-
-            showSuccess('Loan application submitted for approval');
-            setTimeout(() => this.reset(), 2000);
-        });
-
-        function showSuccess(msg) {
-            const successMsg = document.getElementById('successMsg');
-            const errorMsg = document.getElementById('errorMsg');
-            errorMsg.style.display = 'none';
-            successMsg.textContent = '✅ ' + msg;
-            successMsg.style.display = 'block';
-            setTimeout(() => successMsg.style.display = 'none', 4000);
+        if (confirmation) {
+            document.getElementById("loanForm").reset();
         }
+    }
+</script>
 
-        function showError(msg) {
-            const errorMsg = document.getElementById('errorMsg');
-            const successMsg = document.getElementById('successMsg');
-            successMsg.style.display = 'none';
-            errorMsg.textContent = '❌ ' + msg;
-            errorMsg.style.display = 'block';
-            setTimeout(() => errorMsg.style.display = 'none', 4000);
-        }
-    </script> -->
 </body>
 </html>

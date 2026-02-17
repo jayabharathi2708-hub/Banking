@@ -1,7 +1,7 @@
 package com.example.bankingsystem.service;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,9 +21,9 @@ public class TransactionService {
     private AccountRepository accountRepo;
 
     // Get all transactions by accountId
-    public List<Transaction> getTransactionsByAccountId(Long accountId) {
-        return transactionRepo.findByAccountId(accountId);
-    }
+    // public List<Transaction> getTransactionsByAccountId(Long accountId) {
+    //     return transactionRepo.findByAccountId(accountId);
+    // }
 
     // Save transaction (for deposit / withdraw)
     public Transaction createTransaction(Long accountId, double amount, String type) {
@@ -37,5 +37,13 @@ public class TransactionService {
         tx.setDate(LocalDateTime.now());
 
         return transactionRepo.save(tx);
+    }
+
+    public Optional<Transaction> getTransactionsByAccount(Long accountId) {
+        return transactionRepo.findById(accountId);
+    }
+
+    public Transaction saveTransaction(Transaction transaction) {
+        return transactionRepo.save(transaction);
     }
 }

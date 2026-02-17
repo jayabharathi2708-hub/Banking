@@ -1,6 +1,7 @@
 package com.example.bankingsystem.service;
 
-import java.util.List;
+
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,33 +12,49 @@ import com.example.bankingsystem.repository.AccountRepository;
 @Service
 public class AccountService {
 
+    private final AccountRepository accountRepository;
+
     @Autowired
-    private AccountRepository accountRepo;
-
-    // Get all accounts by userId
-    public List<Account> getAccountsByUserId(Long userId) {
-        return accountRepo.findByUserId(userId);
+    public AccountService(AccountRepository accountRepository) {
+        this.accountRepository = accountRepository;
     }
 
-    // Deposit money
-    public Account deposit(Long accountId, double amount) {
-        Account acc = accountRepo.findById(accountId)
-                .orElseThrow(() -> new RuntimeException("Account not found"));
-
-        acc.setBalance(acc.getBalance() + amount);
-        return accountRepo.save(acc);
-    }
-
-    // Withdraw money
-    public Account withdraw(Long accountId, double amount) {
-        Account acc = accountRepo.findById(accountId)
-                .orElseThrow(() -> new RuntimeException("Account not found"));
-
-        if (acc.getBalance() < amount) {
-            throw new RuntimeException("Insufficient balance");
+        public Account saveAccount(Account account) {
+            return accountRepository.save(account);
         }
 
-        acc.setBalance(acc.getBalance() - amount);
-        return accountRepo.save(acc);
+    // Implement getAccounts
+    public Optional<Account> getAccounts(Long userId) {
+        return Optional.ofNullable(accountRepository.findByUserId(userId)); // return account for given user id
+    }
+
+    public Optional<Account> getAccountByUserId(Long userId) {
+        return Optional.ofNullable(accountRepository.findByUserId(userId));
+    }
+
+    public Account deposit(long accountId, double amount) {
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new RuntimeException("Account not found"));
+        account.setBalance(account.getBalance() + amount);
+        return accountRepository.save(account);
+    }
+
+    public Account withdraw(Long accountId, double amount) {
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new RuntimeException("Account not found"));
+        if (account.getBalance() < amount) {
+            throw new RuntimeException("Insufficient balance");
+        }
+        account.setBalance(account.getBalance() - amount);
+        return accountRepository.save(account);
+    }
+
+    public Object getBalance(Long userId) {
+        System.out.println("Fetching balance for user ID: " + userId);
+        Account account = accountRepository.findByUserId(userId);
+        if (account == null) {
+            throw new RuntimeException("Account not found for user ID: " + userId);
+        }
+        return account.getBalance();
     }
 }

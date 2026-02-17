@@ -93,6 +93,7 @@
  <div class="container">
 <div class="dashboard">
     <h2 th:text="'Welcome, ' + ${username} + ' 👋'"></h2>
+    <p th:text="'Account Number: ' + ${accountNumber}"></p>
 
     <div class="balance">
         ₹ <span th:text="${balance}"></span>

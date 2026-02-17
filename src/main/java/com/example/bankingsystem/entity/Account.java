@@ -20,6 +20,18 @@ public class Account {
     @JoinColumn(name = "user_id")
     private User user;
 
+    private String accountNumber;
+
+        // getters and setters
+    
+        public String getAccountNumber() {
+            return accountNumber;
+        }
+
+        public void setAccountNumber(String accountNumber) {
+            this.accountNumber = accountNumber;
+        }
+
     public double getBalance() {
        
         return balance;

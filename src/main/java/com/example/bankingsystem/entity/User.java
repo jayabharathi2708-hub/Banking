@@ -26,6 +26,11 @@ public class User {
     private int cibilScore;
     private double totalSpend;
 
+    private String email;
+    private String accountNumber;
+
+    
+
 
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -68,6 +73,22 @@ public class User {
 
     public Long getId() {
         return id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+
+    public void setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
     }
 
 }

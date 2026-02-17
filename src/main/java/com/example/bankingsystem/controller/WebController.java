@@ -11,12 +11,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.bankingsystem.entity.Account;
-import com.example.bankingsystem.entity.User;
+import com.example.bankingsystem.entity.Loan;
 import com.example.bankingsystem.entity.Transaction;
-import com.example.bankingsystem.service.AccountService.AccountService;
-import com.example.bankingsystem.service.AccountService.AuthService;
-import com.example.bankingsystem.service.AccountService.LoanService;
-import com.example.bankingsystem.service.AccountService.TransactionService;
+import com.example.bankingsystem.entity.User;
+import com.example.bankingsystem.service.AccountService;
+import com.example.bankingsystem.service.AuthService;
+import com.example.bankingsystem.service.LoanService;
+import com.example.bankingsystem.service.TransactionService;
 
 @Controller
 @RequestMapping("/mybank")   // ✅ very important
@@ -35,6 +36,9 @@ public class WebController {
     @Autowired
     TransactionService transactionService;
 
+    @Autowired
+    private com.example.bankingsystem.repository.UserRepository userRepo;
+
     @GetMapping("")
     public String home() {
         return "index";
@@ -50,9 +54,13 @@ public class WebController {
                               @RequestParam String password,
                               Model model) {
 
-        if (authService.login(username, password) != null) {
+        User user = authService.login(username, password);
+        if (user != null) {
             model.addAttribute("username", username);
-            model.addAttribute("balance", accountService.getBalance(authService.getUserByUsername(username).getId()));
+            model.addAttribute("balance", accountService.getBalance(user.getId()));
+            model.addAttribute("accountNumber", userRepo.findByUsername(username).get().getAccountNumber());
+
+            System.out.println("User " + username + " logged in successfully. Account Number: " + userRepo.findByUsername(username).get().getAccountNumber());
             return "accounts";
         } else {
             model.addAttribute("error", "Invalid credentials!");
@@ -178,4 +186,20 @@ public class WebController {
         model.addAttribute("username", username);
         return "loans";
     }
+
+    @GetMapping("/loans-view")
+    public String loansViewPage(@RequestParam String username, Model model) {
+        model.addAttribute("username", username);
+        return "loans-view";
+    }
+
+
+    @GetMapping("/loans/view")
+    public String viewLoans(@RequestParam String username, Model model) {
+        Iterable<Loan> loans = loanService.getLoan(authService.getUserByUsername(username).getId());
+        model.addAttribute("loans", loans);
+        model.addAttribute("username", username);   
+        return "loan-view";
+    }
+
 }
