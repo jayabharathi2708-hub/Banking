@@ -20,5 +20,9 @@ public class TransactionService {
     public Optional<Transaction> getTransactionsByAccount(Long accountId) {
         return repo.findById(accountId);
     }
+
+    public Transaction saveTransaction(Transaction transaction) {
+        return repo.save(transaction);
+    }
 }
 
