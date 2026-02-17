@@ -63,6 +63,7 @@
         <a th:href="@{/mybank/accounts(username=${username})}">Accounts</a>
         <a th:href="@{/mybank/transaction(username=${username})}">Deposit / Withdraw</a>
         <a th:href="@{/mybank/loans(username=${username})}">Loans</a>
+        <a th:if="${username == 'admin'}" th:href="@{/mybank/loan-view}">View Loans</a>
         <a th:href="@{/mybank/login}">Logout</a>
     </nav>
 </header>

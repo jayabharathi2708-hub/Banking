@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Loan List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            padding: 30px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .approved {
+            color: green;
+            font-weight: bold;
+        }
+
+        .pending {
+            color: orange;
+            font-weight: bold;
+        }
+
+        .rejected {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Loan Details</h2>
+
+<table>
+    <thead>
+    <tr>
+        <th>Amount</th>
+        <th>Duration (Months)</th>
+        <th>Status</th>
+        <th>Loan Type</th>
+        <th>User ID</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="loan : ${loans}">
+        <td th:text="${loan.amount}"></td>
+        <td th:text="${loan.durationMonths}"></td>
+
+        <td th:text="${loan.status}"
+            th:classappend="${loan.status == 'APPROVED'} ? 'approved' :
+                            (${loan.status == 'REJECTED'} ? 'rejected' : 'pending')">
+        </td>
+
+        <td th:text="${loan.type}"></td>
+        <td th:text="${loan.user.id}"></td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

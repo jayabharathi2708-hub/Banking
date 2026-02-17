@@ -1,13 +1,15 @@
 package com.example.bankingsystem.controller;
 
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.example.bankingsystem.entity.Loan;
-import com.example.bankingsystem.service.AccountService.LoanService;
+import com.example.bankingsystem.service.LoanService;
 
 @RestController
 @RequestMapping("/loans")
@@ -23,8 +25,5 @@ public class LoanController {
         return loanService.applyLoan(userId, type, amount);
     }
 
-    @GetMapping("/{userId}")
-    public Optional<Loan> getLoans(@PathVariable Long userId) {
-        return loanService.getLoans(userId);
-    }
+  
 }
